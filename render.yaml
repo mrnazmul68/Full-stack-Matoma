@@ -2,6 +2,7 @@ services:
   # Backend Web Service
   - type: web
     name: matoma-backend
+    plan: free
     env: node
     rootDir: Backend
     buildCommand: npm install
@@ -10,11 +11,11 @@ services:
       - key: PORT
         value: 10000
       - key: MONGO_URI
-        sync: false # Set this in Render dashboard
+        sync: false
       - key: MONGO_DB_NAME
         value: matoma
       - key: FRONTEND_ORIGIN
-        sync: false # Set this to the frontend URL after it's deployed
+        sync: false
       - key: ADMIN_EMAIL
         sync: false
       - key: ADMIN_PASSWORD
@@ -37,6 +38,7 @@ services:
   # Frontend Static Site
   - type: web
     name: matoma-frontend
+    plan: free
     env: static
     rootDir: Frontend
     buildCommand: npm install && npm run build
