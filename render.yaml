@@ -37,7 +37,6 @@ services:
   # Frontend Static Site
   - type: static
     name: matoma-frontend
-    env: static
     rootDir: Frontend
     buildCommand: npm install && npm run build
     publishPath: dist
