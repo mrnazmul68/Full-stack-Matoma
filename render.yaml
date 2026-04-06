@@ -35,7 +35,7 @@ services:
         sync: false
 
   # Frontend Static Site
-  - type: static
+  - type: web
     name: matoma-frontend
     env: static
     rootDir: Frontend
