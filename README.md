@@ -2,26 +2,43 @@
 
 A full-stack project with an Express backend and a React (Vite) frontend.
 
-## Deployment on Render
+## Deployment on Render (Manual)
 
-This project is configured for easy deployment on Render using the [render.yaml](file:///c:/Users/Laptop%20Click/OneDrive/Desktop/Matoma/render.yaml) blueprint.
+Follow these steps to deploy your backend and frontend for free.
 
-### Prerequisites
+### 1. Deploy the Backend (Web Service)
+1. Go to your [Render Dashboard](https://dashboard.render.com/).
+2. Click **New + > Web Service**.
+3. Select your GitHub repository: `Full-stack-Matoma`.
+4. **Settings**:
+   - **Name**: `matoma-backend`
+   - **Region**: Choose the one closest to you.
+   - **Language**: `Node`
+   - **Root Directory**: `Backend`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+   - **Plan**: Select **Free**.
+5. **Environment Variables**:
+   - `PORT`: `10000`
+   - `MONGO_URI`: (Your MongoDB connection string)
+   - `MONGO_DB_NAME`: `matoma`
+   - `FRONTEND_ORIGIN`: (Your frontend URL after it's live)
+   - `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`
 
-1.  A [Render](https://render.com) account.
-2.  A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) database.
-
-### Deployment Steps
-
-1.  Connect your GitHub repository to Render.
-2.  Render will automatically detect the [render.yaml](file:///c:/Users/Laptop%20Click/OneDrive/Desktop/Matoma/render.yaml) file and prompt you to create the Blueprint.
-3.  **Matoma Backend (Web Service)**:
-    - Set the `MONGO_URI` environment variable.
-    - Set `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_SESSION_SECRET`.
-    - Set `SMTP_USER` and `SMTP_PASSWORD` for email functionality.
-    - Set `FRONTEND_ORIGIN` to your frontend's URL after it's deployed.
-4.  **Matoma Frontend (Static Site)**:
-    - Set `VITE_API_BASE_URL` to your backend's URL followed by `/api` (e.g., `https://matoma-backend.onrender.com/api`).
+### 2. Deploy the Frontend (Static Site)
+1. Click **New + > Static Site**.
+2. Select your GitHub repository: `Full-stack-Matoma`.
+3. **Settings**:
+   - **Name**: `matoma-frontend`
+   - **Root Directory**: `Frontend`
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `dist`
+4. **Environment Variables**:
+   - `VITE_API_BASE_URL`: (Your backend URL + `/api`)
+5. **Redirects/Rewrites**:
+   - **Source**: `/*`
+   - **Destination**: `/index.html`
+   - **Action**: `Rewrite`
 
 ### Local Development
 
