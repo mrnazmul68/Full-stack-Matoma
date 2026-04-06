@@ -35,15 +35,19 @@ const hashSessionToken = (token) =>
 const createSessionToken = () => crypto.randomBytes(32).toString('base64url');
 
 const createCookieOptions = (maxAgeSeconds) => {
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
+
   const attributes = [
     'Path=/',
     'HttpOnly',
-    'SameSite=Lax',
     `Max-Age=${maxAgeSeconds}`,
   ];
 
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction) {
+    attributes.push('SameSite=None');
     attributes.push('Secure');
+  } else {
+    attributes.push('SameSite=Lax');
   }
 
   return attributes.join('; ');

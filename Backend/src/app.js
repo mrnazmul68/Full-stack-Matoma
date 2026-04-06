@@ -9,7 +9,10 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-const allowedOrigins = [process.env.FRONTEND_ORIGIN].filter(Boolean);
+const allowedOrigins = [process.env.FRONTEND_ORIGIN].filter(Boolean).map((origin) => {
+  const normalizedOrigin = origin.trim().replace(/\/$/, '');
+  return normalizedOrigin;
+});
 
 app.use(
   cors({
@@ -18,11 +21,13 @@ app.use(
         return callback(null, true);
       }
 
-      const isLocalhostOrigin =
-        /^http:\/\/localhost:\d+$/.test(origin) ||
-        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin);
+      const normalizedOrigin = origin.trim().replace(/\/$/, '');
 
-      if (allowedOrigins.includes(origin) || isLocalhostOrigin) {
+      const isLocalhostOrigin =
+        /^http:\/\/localhost:\d+$/.test(normalizedOrigin) ||
+        /^http:\/\/127\.0\.0\.1:\d+$/.test(normalizedOrigin);
+
+      if (allowedOrigins.includes(normalizedOrigin) || isLocalhostOrigin) {
         return callback(null, true);
       }
 
