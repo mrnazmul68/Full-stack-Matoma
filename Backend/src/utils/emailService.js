@@ -58,6 +58,9 @@ function getTransporter() {
       port: config.port,
       secure: config.secure,
       auth: config.auth,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
   }
 
