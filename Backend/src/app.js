@@ -33,6 +33,14 @@ app.use(
 );
 app.use(express.json({ limit: '25mb' }));
 
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to Matoma Backend API!',
+    healthCheck: '/api/health',
+    version: '1.0.0',
+  });
+});
+
 app.get('/api/health', (req, res) => {
   const dbStatus = getDBStatus();
 
