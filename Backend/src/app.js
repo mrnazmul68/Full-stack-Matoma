@@ -1,5 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const mongoSanitize = require('express-mongo-sanitize');
+const rateLimit = require('express-rate-limit');
 const { getDBStatus, isDBConnected } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -8,6 +12,25 @@ const siteContentRoutes = require('./routes/siteContentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
+
+// Security and Performance Middleware
+app.use(helmet());
+app.use(compression());
+app.use(mongoSanitize());
+
+// Trust proxy for Render (needed for rate limiting)
+app.set('trust proxy', 1);
+
+// Rate Limiting
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: { message: 'Too many requests from this IP, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use('/api/', apiLimiter);
 
 const allowedOrigins = [process.env.FRONTEND_ORIGIN].filter(Boolean).map((origin) => {
   const normalizedOrigin = origin.trim().replace(/\/$/, '');
