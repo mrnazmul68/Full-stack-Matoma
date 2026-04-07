@@ -51,8 +51,8 @@ app.use(
       const normalizedOrigin = origin.trim().replace(/\/$/, '');
 
       const isLocalhostOrigin =
-        /^http:\/\/localhost:\d+$/.test(normalizedOrigin) ||
-        /^http:\/\/127\.0\.0\.1:\d+$/.test(normalizedOrigin);
+        /^https?:\/\/localhost(:\d+)?$/.test(normalizedOrigin) ||
+        /^https?:\/\/127\.0\.0\.1(:\d+)?$/.test(normalizedOrigin);
 
       if (allowedOrigins.includes(normalizedOrigin) || isLocalhostOrigin) {
         return callback(null, true);
