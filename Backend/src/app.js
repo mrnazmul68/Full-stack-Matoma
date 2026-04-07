@@ -14,7 +14,11 @@ const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 
 // Security and Performance Middleware
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  }),
+);
 app.use(compression());
 app.use(mongoSanitize());
 
