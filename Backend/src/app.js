@@ -2,9 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
-const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const { getDBStatus, isDBConnected } = require('./config/db');
+const { sanitizeRequest } = require('./middleware/sanitizeRequest');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const donorRoutes = require('./routes/donorRoutes');
@@ -20,7 +20,7 @@ app.use(
   }),
 );
 app.use(compression());
-app.use(mongoSanitize());
+app.use(sanitizeRequest());
 
 // Trust proxy for Render (needed for rate limiting)
 app.set('trust proxy', 1);

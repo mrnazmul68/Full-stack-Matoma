@@ -1,4 +1,23 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+function normalizeApiBaseUrl(baseUrl) {
+  return baseUrl.replace(/\/+$/, '');
+}
+
+function getApiBaseUrl() {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
+  }
+
+  if (import.meta.env.DEV) {
+    return '/api';
+  }
+
+  return normalizeApiBaseUrl(`${window.location.origin}/api`);
+}
+
+function buildApiUrl(path) {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${getApiBaseUrl()}${normalizedPath}`;
+}
 
 export async function apiRequest(path, options = {}) {
   const { method = 'GET', body, headers = {} } = options;
@@ -6,7 +25,7 @@ export async function apiRequest(path, options = {}) {
   let response;
 
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(buildApiUrl(path), {
       method,
       credentials: 'include',
       headers: {
